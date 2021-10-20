@@ -6,14 +6,423 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Assignment 3</title>
     
-    <script type="module" crossorigin src="./assets/index.479df215.js"></script>
-    <link rel="modulepreload" href="./assets/vendor.56f79c87.js">
-    <link rel="stylesheet" href="./assets/index.3aefa2fc.css">
-  </head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="module" crossorigin src="./assets/index.42fe4937.js"></script>
+    <link rel="stylesheet" href="./assets/index.149cfa65.css">
+  </head> 
   <body>
-    <h2>Assignment 3</h2>
-    <div id="d3-div"></div>
-    <div id="vega-div"></div>
+    <div class="header">
+      <br>
+      <h2>Data Visualization A3: Examining Poverty Rates</h2>
+      <br>
+      <p><i>Yiluo Qin & Emily Zhang</i></p>
+    </div>
+    <br><br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-8">
+        <div class="centerBlock">
+          <p style="font-size: 16px">Select 2 countries: </p>
+          <div id="map"></div>
+          <div class="map"></div>
+          
     
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+          
+          <!-- TOPOJson library-->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/2.2.0/topojson.min.js"></script>
+        </div>
+        </div>
+        <div class="col-3">
+          <p style="font-size: 16px">&nbsp;&nbsp;&nbsp;Select remaining metrics: </p>
+          <div id="settings">
+              <!-- A text telling you which countries are currently selected-->
+              <div class= "field">
+                <a id="country_code_1">The 1st country selected is: </a>
+                <br>
+              </div>  
+              <div class= "field">
+                <a id="country_code_2">The 2nd country selected is: </a>
+                <br><br>
+              </div>
+    
+              <!-- Radio button: poverty line -->
+              <!-- TODO change to dropdown -->
+              <div class= "field">
+                <label for="start_year">Poverty Metric:</label>
+                <select name="poverty_metric" id="poverty_metric">
+                  <option value="Poverty headcount ratio at $1.90 a day (2011 PPP) (% of population)">$1.90 per day</option>
+                  <option value="Poverty headcount ratio at $3.20 a day (2011 PPP) (% of population)">$3.20 per day</option>
+                  <option value="Poverty headcount ratio at $5.50 a day (2011 PPP) (% of population)">$5.50 per day</option>
+                </select><br><br>
+              </div>
+    
+              <!-- Dropdown: start & end year -->
+              <div class= "field">
+                <label for="start_year">Start Year:</label>
+                <select name="start_year" id="start_year">
+                  <option value="1977">1977</option>
+                  <option value="1978">1978</option>
+                  <option value="1979">1979</option>
+                  <option value="1980">1980</option>
+                  <option value="1981">1981</option>
+                  <option value="1982">1982</option>
+                  <option value="1983">1983</option>
+                  <option value="1984">1984</option>
+                  <option value="1985">1985</option>
+                  <option value="1986">1986</option>
+                  <option value="1987">1987</option>
+                  <option value="1988">1988</option>
+                  <option value="1989">1989</option>
+                  <option value="1990">1990</option>
+                  <option value="1991">1991</option>
+                  <option value="1992">1992</option>
+                  <option value="1993">1993</option>
+                  <option value="1994">1994</option>
+                  <option value="1995">1995</option>
+                  <option value="1996">1996</option>
+                  <option value="1997">1997</option>
+                  <option value="1998">1998</option>
+                  <option value="1999">1999</option>
+                  <option value="2000">2000</option>
+                  <option value="2001">2001</option>
+                  <option value="2002">2002</option>
+                  <option value="2003">2003</option>
+                  <option value="2004">2004</option>
+                  <option value="2005">2005</option>
+                  <option value="2006">2006</option>
+                  <option value="2007">2007</option>
+                  <option value="2008">2008</option>
+                  <option value="2009">2009</option>
+                  <option value="2010">2010</option>
+                  <option value="2011">2011</option>
+                  <option value="2012">2012</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                </select><br>
+                <label for="end_year">End Year:</label>
+                <select name="end_year" id="end_year">
+                  <option value="1978">1978</option>
+                  <option value="1979">1979</option>
+                  <option value="1980">1980</option>
+                  <option value="1981">1981</option>
+                  <option value="1982">1982</option>
+                  <option value="1983">1983</option>
+                  <option value="1984">1984</option>
+                  <option value="1985">1985</option>
+                  <option value="1986">1986</option>
+                  <option value="1987">1987</option>
+                  <option value="1988">1988</option>
+                  <option value="1989">1989</option>
+                  <option value="1990">1990</option>
+                  <option value="1991">1991</option>
+                  <option value="1992">1992</option>
+                  <option value="1993">1993</option>
+                  <option value="1994">1994</option>
+                  <option value="1995">1995</option>
+                  <option value="1996">1996</option>
+                  <option value="1997">1997</option>
+                  <option value="1998">1998</option>
+                  <option value="1999">1999</option>
+                  <option value="2000">2000</option>
+                  <option value="2001">2001</option>
+                  <option value="2002">2002</option>
+                  <option value="2003">2003</option>
+                  <option value="2004">2004</option>
+                  <option value="2005">2005</option>
+                  <option value="2006">2006</option>
+                  <option value="2007">2007</option>
+                  <option value="2008">2008</option>
+                  <option value="2009">2009</option>
+                  <option value="2010">2010</option>
+                  <option value="2011">2011</option>
+                  <option value="2012">2012</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                </select>
+                <br><br>
+              </div>
+    
+              <!-- Submit button: submit settings -->
+              <button onclick="submitSettings()">View Graph</button>
+              
+          </div>  
+        </div>
+      </div>
+      <br><br><br>
+      <div class="row">
+        
+        <div id="graph"><h3 id="graph_title"></h3><br></div>
+      </div>
+    </div>
+    <br><br><br>
+    
+    <footer>
+      <p>Source: <a href="https://github.com/ZeningQu/World-Bank-Data-by-Indicators/tree/master/poverty">World Bank Data - Poverty Indicators</a></p>
+    </footer>
+
+    <script> 
+    ////////////////////////////////////////////////////////////////////////////
+    // Create global variables referenced in graph
+    ////////////////////////////////////////////////////////////////////////////
+    var country1 = "";
+    var country2 = "";
+    var poverty_metric = "";
+    var start_year = 0;
+    var end_year = 0;
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // map topojson code
+    ////////////////////////////////////////////////////////////////////////////
+    (function () {
+    var margin = {top:50, left:50, right:50, bottom:50},
+    height = 400 - margin.top - margin.bottom,
+    width = 800 - margin.left - margin.right;
+
+    var svg = d3.select("#map")
+    .append("svg")
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width + margin.left + margin.right)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    /***
+     * read in the world.topojson
+     * read in the poverty.json
+     */
+    d3.queue()
+    .defer(d3.json, "world.topojson")
+    .defer(d3.csv, "poverty.csv")
+    .await(ready)
+
+    /**
+     * create a new projection using mercator and center it(translate)
+     * and zoom in a certain amount(scale)
+     */
+    var offset = [width / 1.8, height / 2]
+    var projection = d3.geoMercator()
+    .translate(offset)
+    .scale(100)
+
+    /** 
+     * create a path(geopath) using a projection
+    */
+    var path = d3.geoPath()
+    .projection(projection)
+
+
+    var maxCountryList = []
+    var lastCountry;
+    var number = 0;
+    var currentCountryName = "";
+
+  function ready (error, data, poverty) {
+    console.log(data)
+
+    var countries = topojson.feature(data, data.objects.countries).features
+
+    console.log(countries)
+
+
+    var countryNames = {}
+    // poverty.forEach(function(d) {
+    //   countryNames[d.id] = d.name
+    //   option = countryList.append("option");
+    //   option.text(d.name);
+    //   option.property("value", d.id);
+    // })
+
+    var current;
+
+    console.log(poverty)
+    /**
+     * add a path for each country (shape --> path)
+     */
+    svg.selectAll(".country")
+    .data(countries)
+    .enter().append("path")
+    .attr("class", "country")
+    .attr("d", path)
+    .on("click", function(d) {
+
+      number += 1
+      if (number == 1) {
+        current = this;
+        d3.select(current).classed("selected",true)
+        country1 = d.properties.name
+        console.log(country1)
+        document.getElementById("country_code_1").innerHTML = "The 1st country selected is: " + country1;
+      }
+      else if (number == 2) {
+        current = this;
+        d3.select(current).classed("selected",true)
+        country2 = d.properties.name
+        console.log(country2)
+        document.getElementById("country_code_2").innerHTML = "The 2nd country selected is: " + country2;
+      }
+      else {
+        alert("You have already selected two countries. Page will be reloaded.")
+        location.reload();
+        return false;
+      }
+    })
+  }
+
+  }) ();
+
+    ////////////////////////////////////////////////////////////////////////////
+    // loading graph settings 
+    ////////////////////////////////////////////////////////////////////////////
+    function submitSettings() {
+      if ((!country1 || !country2) || (country1 == country2)) {
+        alert("Plase make sure two distinct countries are selected")
+        location.reload()
+      }
+
+      // reset global variable values
+      poverty_metric = document.getElementById("poverty_metric").value; // not working w/o a form? can also just change to a dropdown
+      start_year = document.getElementById("start_year").value;
+      end_year = document.getElementById("end_year").value;
+
+      //to make sure the start year is less than the end year 
+      if (parseInt(start_year) > parseInt(end_year)) {
+        alert("Please make sure the start year is strictly less than the end year.")
+        location.reload()
+      };
+
+      // check they are now loaded w/ what we expect
+      console.log(country1)
+      console.log(country2)
+      console.log(poverty_metric)
+      console.log(start_year)
+      console.log(end_year)
+      
+      // make graph section not hidden
+      document.getElementById("graph").style.visibility = "visible";
+
+      // write graph title
+      document.getElementById("graph_title").innerHTML = country1 + " & " + country2 + " % in Poverty - " + poverty_metric.slice(27, 38) + " (" + start_year + "-" + end_year + ") "
+
+      // call the draw graph function now that the global vars are loaded
+      drawGraph()
+    }
+
+////////////////////////////////////////////////////
+
+function drawGraph(){ 
+  // clear prev graph
+  d3.select("#graph").innerHTML = '';
+  
+  // set the dimensions and margins of the graph
+  var margin = {top: 10, right: 30, bottom: 30, left: 60},
+      width = 800 - margin.left - margin.right,
+      height = 400 - margin.top - margin.bottom;
+
+  // append the svg object to the body of the page
+  var svg = d3.select("#graph")
+    .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+  //Read the data
+  d3.csv("poverty_sorted.csv", function(data) {
+
+    // filter data by selected countries & year (note csv must be sorted by country then year)
+    data = data.filter(d => ((d["Country Name"] == country1 || d["Country Name"] == country2) &&
+                                 (d.Year >= start_year && d.Year <= end_year)));
+
+    // group the data by country
+    var sumstat = d3.nest() 
+      .key(function(d) { return d["Country Name"];})
+      .entries(data);
+      console.log(sumstat)
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleLinear() 
+      .domain(d3.extent(data, function(d) { return parseInt(d.Year); })) // TODO: numbers are cutoff plz fix?
+      .range([ 0, width ]);
+    svg.append("g")
+      .attr("transform", "translate(" + 0 + "," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain([0, d3.max(data, function(d) { return +d[poverty_metric]; }) + 1]) 
+      .range([ height, 0 ]);
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    // color palette
+    var res = sumstat.map(function(d){ return d.key }) // list of country names
+    var color = d3.scaleOrdinal()
+      .domain(res)
+      .range(['#e41a1c','#0377fc']) 
+
+    // Draw the line
+    svg.selectAll(".line")
+        .data(sumstat)
+        .enter()
+        .append("path")
+          .attr("fill", "none")
+          .attr("stroke", function(d){ return color(d.key) })
+          .attr("stroke-width", 1.5)
+          .attr("d", function(d){
+            return d3.line()
+              .x(function(d) { return x(d.Year); })
+              .y(function(d) { return y(+d[poverty_metric]); }) 
+              (d.values)
+          })
+  })
+
+  // x-axis
+  svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 5)
+    .style("font-size", "14px")
+    .text("Year");
+
+  // y-axis  
+  svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("x", 10)
+    .attr("y", 5)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .style("font-size", "14px")
+    .text("Poverty Headcount Ratio (% of Population)");
+
+  // legend pt 1
+  svg.append("text")
+    .attr("id", "legend1")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", 10)
+    .style("font-size", "14px")
+    .text(country1 + ": Red");
+  
+  // legend pt 2
+  svg.append("text")
+    .attr("id", "legend2")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", 30)
+    .style("font-size", "14px")
+    .text(country2 + ": Blue");
+
+}
+    </script>
+
   </body>
 </html>
